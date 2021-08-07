@@ -1,6 +1,8 @@
 import pyrebase
 from creds.config import firebaseConfig, firebaseConfigAuth
 
+import datetime
+
 storage = pyrebase.initialize_app(firebaseConfig).storage()
 storageAuth = pyrebase.initialize_app(firebaseConfigAuth).storage()
 
@@ -13,7 +15,10 @@ uploads the file onto firebase storage service
 
 
 def upload(fileName, uploadName):
+    # added timestamp along with upload name as to uniquely identify each image
+    milliseconds_since_epoch = datetime.datetime.now().timestamp() * 1000
     global storage
+    uploadName = uploadName + str(milliseconds_since_epoch)
     uploadInfo = storage.child(uploadName).put(fileName)
 
     encodedUploadName = uploadName.replace('/', '%2F')

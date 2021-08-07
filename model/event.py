@@ -58,6 +58,11 @@ class Event:
                 'organizers': organizers
             }
             self.collection.insert_one(record)
+
+            """
+            NOTE: If this will be used in a route then return 'jsonify' of that map
+            return jsonify({"status": "0", "comment": "success"})
+            """
             return {"status": "0", "comment": "success"}
         else:
             print("hel")
@@ -71,9 +76,9 @@ class Event:
 
 # Testing
 
-# cats = ['../testingAssets/cat 1.jpeg']
+# cats = ['../testingAssets/cat 1.jpeg','../testingAssets/cat 3.jpeg']
 # ev = Event()
-# _title = "Event ross"
+# _title = "Event joey"
 # _des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum hendrerit consectetur. Aliquam tincidunt nisi in metus sodales cursus. Etiam sed dui feugiat, volutpat mauris sit amet, auctor nulla. Vivamus iaculis metus lobortis tortor viverra, sed venenatis metus sodales. Proin bibendum auctor aliquam. Integer blandit dolor lectus, ut aliquet diam sagittis eu. Donec sodales, justo nec sollicitudin pharetra, sem eros finibus sapien, in sollicitudin urna neque id arcu. Phasellus malesuada lectus felis, at dictum neque feugiat eu. Duis ut aliquam nibh, a porttitor justo. "
 # _images = cats
 # _date = str(datetime.datetime.now().date())
