@@ -2,3 +2,5 @@ env
 creds
 __pycache__
 testingAssets
+credentials
+.idea
