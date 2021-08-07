@@ -1,14 +1,11 @@
 import os
-import datetime
+from bson.json_util import dumps
 
-try:
-    from flask import jsonify
-    from constants import EventMongoDB
-    import controller.firebaseOperations as firebase
-    from pymongo import MongoClient
-    from creds.config import mongodbConfigs  # TODO: Comment this, after adding env variables
-except ImportError:
-    print("Fulfil requirements....")
+from model.constants import EventMongoDB
+import controller.firebaseOperations as firebase
+
+from pymongo import MongoClient
+from creds.config import mongodbConfigs  # TODO: Comment this, after adding env variables
 
 
 def valid_extension() -> list:
@@ -66,21 +63,19 @@ class Event:
             return {"status": "1", "comment": "record already exists of same title"}
 
     def get_all_events(self):
-        docs = []
         cursors = self.collection.find({})
-        for doc in cursors:
-            docs.append(doc)
+        docs = dumps(cursors, indent=2)
         return docs
 
 
 # Testing
 
-cats = ['../testingAssets/cat 1.jpeg']
-ev = Event()
-_title = "Event ross"
-_des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum hendrerit consectetur. Aliquam tincidunt nisi in metus sodales cursus. Etiam sed dui feugiat, volutpat mauris sit amet, auctor nulla. Vivamus iaculis metus lobortis tortor viverra, sed venenatis metus sodales. Proin bibendum auctor aliquam. Integer blandit dolor lectus, ut aliquet diam sagittis eu. Donec sodales, justo nec sollicitudin pharetra, sem eros finibus sapien, in sollicitudin urna neque id arcu. Phasellus malesuada lectus felis, at dictum neque feugiat eu. Duis ut aliquam nibh, a porttitor justo. "
-_images = cats
-_date = str(datetime.datetime.now().date())
-_organizers = ["joey", "chandler", "rachel", "ross"]
-print(ev.set_event(_title, _des, _date, _organizers, _images))
+# cats = ['../testingAssets/cat 1.jpeg']
+# ev = Event()
+# _title = "Event ross"
+# _des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum hendrerit consectetur. Aliquam tincidunt nisi in metus sodales cursus. Etiam sed dui feugiat, volutpat mauris sit amet, auctor nulla. Vivamus iaculis metus lobortis tortor viverra, sed venenatis metus sodales. Proin bibendum auctor aliquam. Integer blandit dolor lectus, ut aliquet diam sagittis eu. Donec sodales, justo nec sollicitudin pharetra, sem eros finibus sapien, in sollicitudin urna neque id arcu. Phasellus malesuada lectus felis, at dictum neque feugiat eu. Duis ut aliquam nibh, a porttitor justo. "
+# _images = cats
+# _date = str(datetime.datetime.now().date())
+# _organizers = ["joey", "chandler", "rachel", "ross"]
+# print(ev.set_event(_title, _des, _date, _organizers, _images))
 # print(ev.get_all_events())
