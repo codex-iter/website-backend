@@ -1,11 +1,9 @@
-from flask import Flask, make_response,request
-from flask_cors import CORS
+from flask import Flask, make_response, request
 from model.event import Event
 
 app = Flask(__name__)
 # TODO: setup cors with proper resources matching frontend
 app.config['CORS_HEADERS'] = 'Content-Type'
-CORS(app)
 
 
 def _build_cors_prelight_response():
@@ -21,7 +19,7 @@ def index():
     return 'webserver is working fine'
 
 
-@app.route('/getEvents', methods=['GET', 'OPTIONS'])
+@app.route('/api/getEvents', methods=['GET', 'OPTIONS'])
 def event():
     if request.method == 'OPTIONS':
         return _build_cors_prelight_response()
@@ -34,3 +32,5 @@ def event():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

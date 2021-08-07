@@ -1,8 +1,9 @@
 import os
 from bson.json_util import dumps
+import datetime
 
+import controller.firebaseOperations as fb
 from model.constants import EventMongoDB
-import controller.firebaseOperations as firebase
 
 from pymongo import MongoClient
 from creds.config import mongodbConfigs  # TODO: Comment this, after adding env variables
@@ -18,7 +19,7 @@ def select_images(images_path: list) -> list:
         image_name, extension = os.path.splitext(os.path.basename(path))  # for getting file name and extension
         print(image_name, extension)
         if extension in valid_extension():
-            uri = firebase.upload(path, image_name)
+            uri = fb.upload(path, image_name)
             images_uri.append(uri)
     return images_uri
 
@@ -49,17 +50,17 @@ class Event:
                     images_uri = select_images(images_path)
                 except FileNotFoundError:
                     print("Not valid image path")
-
-                record = {                  # random '_id' will generated
-                    'title': title,
-                    'description': description,
-                    'images': images_uri,
-                    'date': date,
-                    'organizers': organizers
-                }
-                self.collection.insert_one(record)
-                return {"status": "0", "comment": "success"}
+            record = {                  # random '_id' will generated
+                'title': title,
+                'description': description,
+                'images': images_uri,
+                'date': date,
+                'organizers': organizers
+            }
+            self.collection.insert_one(record)
+            return {"status": "0", "comment": "success"}
         else:
+            print("hel")
             return {"status": "1", "comment": "record already exists of same title"}
 
     def get_all_events(self):
