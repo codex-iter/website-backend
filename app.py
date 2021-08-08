@@ -1,6 +1,6 @@
 from flask import Flask, make_response, request, Response, jsonify
 from flask_cors import CORS
-from controller import membersDatabase, auth
+from controller import membersDatabase, messagesDatabase, auth
 
 app = Flask(__name__)
 # TODO: setup cors with proper resources matching frontend
@@ -27,15 +27,28 @@ def delEvent():
 #contact-us routes
 @app.route('/api/getMessage', methods=['GET'])
 def getMessage():
-    return ''
+    if auth.checkLogin():
+        return jsonify(messagesDatabase.getAllMessage())
+
+    return Response(status=401)
 
 @app.route('/api/addMessage', methods=['POST'])
 def addMessage():
-    return ''
+    if messagesDatabase.addMessage(request.json):
+        return Response(status=200)
+
+    return Response(status=400)
 
 @app.route('/api/delMessage', methods=['POST'])
 def delMessage():
-    return ''
+    if auth.checkLogin():
+        if messagesDatabase.deleteMessage(request.json):
+            return Response(status=200)
+
+        else:
+            return Response(status=400)
+
+    return Response(status=401)
 
 #member details routes
 @app.route('/api/getAlumni', methods=['GET'])
