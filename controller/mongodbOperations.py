@@ -8,3 +8,16 @@ db=client['codex_website']
 def addRecord(tableName, data):
     table = db[tableName]
     return table.insert_one(data)
+
+def searchRecord(tableName, q):
+    curr = db[tableName].find(q)
+    arr=[]
+
+    for tmp in curr:
+        tmp['_id']=str(tmp['_id'])
+        arr.append(tmp)
+    
+    return arr
+
+def deleteRecord(tableName, q):
+    curr = db[tableName].delete_one(q)

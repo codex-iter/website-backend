@@ -1,4 +1,4 @@
-from controller.mongodbOperations import addRecord
+from controller.mongodbOperations import addRecord, searchRecord, deleteRecord
 
 class Member:
     def __init__(self, name, role, skill, github, githubDP, twitter=None, linkedin=None):
@@ -21,4 +21,10 @@ class Member:
             'githubDP': self.githubDP
         }
 
-        addRecord('members', data)
+        return addRecord('members', data)
+
+    def query(q={}):
+        return searchRecord('members', q)
+
+    def delete(q):
+        deleteRecord('members', q)

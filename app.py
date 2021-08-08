@@ -1,4 +1,4 @@
-from flask import Flask, make_response, request, Response
+from flask import Flask, make_response, request, Response, jsonify
 from flask_cors import CORS
 from controller import membersDatabase, auth
 
@@ -20,7 +20,7 @@ def getEvent():
 def addEvent():
     return ''
 
-@app.route('/api/delEvent', methods=['DELETE'])
+@app.route('/api/delEvent', methods=['POST'])
 def delEvent():
     return ''
 
@@ -33,18 +33,18 @@ def getMessage():
 def addMessage():
     return ''
 
-@app.route('/api/delMessage', methods=['DELETE'])
+@app.route('/api/delMessage', methods=['POST'])
 def delMessage():
     return ''
 
 #member details routes
 @app.route('/api/getAlumni', methods=['GET'])
 def getAlumni():
-    return ''
+    return jsonify(membersDatabase.getAlumni())
 
 @app.route('/api/getMember', methods=['GET'])
 def getMember():
-    return ''
+    return jsonify(membersDatabase.getMembers())
 
 @app.route('/api/addMember', methods=['POST'])
 def addMember():
@@ -56,9 +56,15 @@ def addMember():
 
     return Response(status=401)
 
-@app.route('/api/delMember', methods=['DELETE'])
+@app.route('/api/delMember', methods=['POST'])
 def delMember():
-    return ''
+    if auth.checkLogin():
+        if membersDatabase.delMember(request.json):
+            return Response(status=200)
+        else:
+            return Response(status=400)
+
+    return Response(status=401)
 
 if __name__ == '__main__':
     app.run(debug=True)
