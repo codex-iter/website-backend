@@ -20,4 +20,4 @@ def searchRecord(tableName, q):
     return arr
 
 def deleteRecord(tableName, q):
-    curr = db[tableName].delete_one(q)
+    return db[tableName].delete_one(q)

@@ -1,6 +1,6 @@
 from flask import Flask, make_response, request, Response, jsonify
 from flask_cors import CORS
-from controller import membersDatabase, messagesDatabase, auth
+from controller import membersDatabase, messagesDatabase, eventsDatabase, auth
 
 app = Flask(__name__)
 # TODO: setup cors with proper resources matching frontend
@@ -14,15 +14,30 @@ def index():
 #Event routes
 @app.route('/api/getEvents', methods=['GET'])
 def getEvent():
-    return ''
+    return jsonify(eventsDatabase.getAllEvents())
 
 @app.route('/api/addEvent', methods=['POST'])
 def addEvent():
-    return ''
+    if auth.checkLogin():
+        files=request.files.getlist('images')
+        file_urls, file_names=eventsDatabase.file_handler(files)
+
+        if eventsDatabase.uploadEvent(request.form, file_urls, file_names):
+            return Response(status=200)
+        else:
+            return Response(status=400)
+    
+    return Response(status=401)
 
 @app.route('/api/delEvent', methods=['POST'])
 def delEvent():
-    return ''
+    if auth.checkLogin():
+        if eventsDatabase.deleteEvent(request.json):
+            return Response(status=200)
+        else:
+            return Response(status=400)
+
+    return Response(status=401)
 
 #contact-us routes
 @app.route('/api/getMessage', methods=['GET'])
