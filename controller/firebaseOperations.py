@@ -3,7 +3,9 @@ from creds.config import firebaseConfig, firebaseConfigAuth
 
 import datetime
 
-storage = pyrebase.initialize_app(firebaseConfig).storage()
+firebase = pyrebase.initialize_app(firebaseConfig)
+storage = firebase.storage()
+auth = firebase.auth()
 storageAuth = pyrebase.initialize_app(firebaseConfigAuth).storage()
 
 '''
@@ -38,3 +40,7 @@ def delete(cloudFileName):
 def getFileList():
     global storageAuth
     return storageAuth.list_files()
+
+def authUser(uid):
+    global auth
+    
