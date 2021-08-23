@@ -1,1 +1,67 @@
 {% extends "base.html" %}
+{% block style %}
+<style>
+    body {
+        background-color: black;
+    }
+    .table {
+        color: white;
+    }
+    .member-table {
+        max-height: 50vh;
+        overflow: auto;
+    }
+</style>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row member-table">
+            <table class="table">
+                <thead>
+                    <th scope="col">Sl No</th>
+                    <th scope="col">Name</th>
+                    <th scope="col"></th>
+                </thead>
+                <tbody id="members">
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <form class="table">
+                <label for="nameinp">Name</label>
+                <input type="text" id="nameinp" placeholder="Name"><br>
+                <label for="nameinp">Skills</label>
+                <input type="text" id="nameinp" placeholder="Name"><br>
+                <label for="nameinp">Github</label>
+                <input type="text" id="nameinp" placeholder="Name"><br>
+                <label for="nameinp">Linkedin</label>
+                <input type="text" id="nameinp" placeholder="Name"><br>
+                <label for="nameinp">Twitter</label>
+                <input type="text" id="nameinp" placeholder="Name"><br>
+                <input type="submit" id="nameinp" value="Update">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script>
+    let members_info=[]
+    $.get('/api/getMember', (data) => {
+        data.sort(function(a, b){return a.name.localeCompare(b.name)})
+        members_info=data
+        html=''
+        count=1
+        for(d in data) {
+            html+=`
+                <tr>
+                    <th scope="row">${parseInt(d)+1}</th>
+                    <td>${data[d].name}</td>
+                    <td><button type="button" class="btn btn-primary" id="${d}">Show Info</button></td>
+                </tr>
+            `
+        }
+
+        document.getElementById('members').innerHTML=html
+    })
+</script>
+{% endblock %}
